@@ -1,0 +1,16 @@
+dataset:
+  name: FashionMNIST
+  num_classes: 10
+  image_size: 28
+
+training:
+  batch_size: 64
+  epochs: 5
+  learning_rate: 0.001
+
+model:
+  name: FashionMNISTCNN
+  num_classes: 10
+
+output:
+  model_path: models/fashion_mnist_cnn.pth

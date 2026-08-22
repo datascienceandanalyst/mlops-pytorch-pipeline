@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  repository-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify project structure
+        run: |
+          test -f README.md
+          test -f .gitignore
+          test -f src/train.py
+          test -f src/model.py
+          test -f src/dataset.py
+          test -f src/serve.py
+          test -f configs/training_config.yaml
+          test -f docker/Dockerfile.train
+          test -f docker/Dockerfile.serve
+          test -f k8s/namespace.yaml
+          test -f k8s/training-job.yaml
+          test -f k8s/serving-deployment.yaml
+          test -f k8s/serving-service.yaml
+          test -f k8s/configmap.yaml
+          test -f k8s/hpa.yaml
+          test -f requirements/train.txt
+          test -f requirements/serve.txt
+          test -f tests/test_model.py
