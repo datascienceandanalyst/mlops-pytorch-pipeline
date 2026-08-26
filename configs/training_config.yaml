@@ -1,16 +1,17 @@
-dataset:
-  name: FashionMNIST
+model:
+  architecture: resnet18
   num_classes: 10
-  image_size: 28
 
 training:
+  epochs: 10
   batch_size: 64
-  epochs: 5
   learning_rate: 0.001
+  early_stopping_patience: 3
 
-model:
-  name: FashionMNISTCNN
-  num_classes: 10
+data:
+  dataset: cifar10
+  data_dir: data
 
 output:
-  model_path: models/fashion_mnist_cnn.pth
+  checkpoint_dir: checkpoints
+  model_name: classifier_v1.pt
