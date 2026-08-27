@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cifar10-training
+  namespace: ml-training
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: cifar10-training
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: trainer
+          image: cifar10-trainer:latest
+          imagePullPolicy: IfNotPresent
+
+          command:
+            - python
+            - src/train.py
+
+          resources:
+            requests:
+              cpu: "2"
+              memory: "4Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+
+          volumeMounts:
+            - name: training-config
+              mountPath: /app/configs
+              readOnly: true
+
+            - name: training-data
+              mountPath: /app/data
+
+            - name: training-checkpoints
+              mountPath: /app/checkpoints
+
+      volumes:
+        - name: training-config
+          configMap:
+            name: training-config
+
+        - name: training-data
+          persistentVolumeClaim:
+            claimName: cifar10-data-pvc
+
+        - name: training-checkpoints
+          persistentVolumeClaim:
+            claimName: training-checkpoints-pvc
